@@ -6,16 +6,17 @@ void main() {
   taskTwo();
   taskThree();
   taskFour();
+  taskFive();
 }
 
 void taskOne() {
   double? number;
-  while (number == null) {
+  while (number == null || number < 0) {
     print(
         'Привіт! Для того, щоб дізнатися свою оцінку, будь ласка, введіть ваш бал:');
     String? input = stdin.readLineSync();
     number = double.tryParse(input ?? '');
-    if (number == null) {
+    if (number == null || number < 0) {
       print('haha nice try. Неправильне введення, спробуйте ще раз ');
     }
   }
@@ -59,24 +60,64 @@ void taskTwo() {
 void taskThree() {
   while (true) {
     stdout.write('Введіть число більше нуля: ');
-    int? n = int.tryParse(stdin.readLineSync()!);
-    if (n == null || n <= 0) {
+    int? number = int.tryParse(stdin.readLineSync()!);
+    if (number == null || number <= 0) {
       print('Будь ласка, введи правильне число, більше нуля: ');
       continue;
     } else {
       int factorial = 1;
       int i = 1;
-      while (i <= n) {
+      while (i <= number) {
         factorial *= i;
         i++;
       }
-      print('Факторіал числа $n: $factorial');
+      print('Факторіал числа $number: $factorial');
       break;
     }
   }
 }
 
 void taskFour() {
+  double celsiusToFahrenheit(double celsius) {
+    return (celsius * 9 / 5) + 32;
+  }
+
+  double fahrenheitToCelsius(double fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+  }
+
+  while (true) {
+    print('Введіть температуру або "exit" для виходу:');
+    String? input = stdin.readLineSync();
+
+    if (input != null && input.toLowerCase() == 'exit') {
+      print('Програма завершена.');
+      break;
+    }
+    double? temperature;
+    try {
+      temperature = double.parse(input!);
+    } catch (e) {
+      print('Невірний ввід. Будь ласка, введіть число або "exit".');
+      continue;
+    }
+
+    print('Введіть систему конвертації (C для Цельсія, F для Фаренгейта):');
+    String? conversionType = stdin.readLineSync()?.toUpperCase();
+
+    if (conversionType == 'C') {
+      double fahrenheit = celsiusToFahrenheit(temperature);
+      print('$temperature C = $fahrenheit F');
+    } else if (conversionType == 'F') {
+      double celsius = fahrenheitToCelsius(temperature);
+      print('$temperature F = $celsius C');
+    } else {
+      print('Невірний тип конвертації. Введіть C або F.');
+    }
+  }
+}
+
+void taskFive() {
   double add(double num1, double num2) {
     return num1 + num2;
   }
